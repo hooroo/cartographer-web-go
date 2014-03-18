@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  table.table
+    thead
+      tr
+        th Host
+        th Report
+        th Status
+        th Detail
+
+    tbody
+      each $node in Nodes
+        each $report in $node.Reports
+          tr[class=$node.CssStatus]
+            td #{$node.Name}
+            td #{$report.Identifier}
+            td #{$report.Status}
+            td #{$report.Detail}
