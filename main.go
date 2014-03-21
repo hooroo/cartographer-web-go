@@ -3,6 +3,7 @@ package main
 import (
   "io"
   "log"
+  "strings"
   "net/http"
   "encoding/json"
   "github.com/gorilla/mux"
@@ -45,12 +46,13 @@ func ShowNodes(w http.ResponseWriter, req *http.Request) {
   for _, n := range ns {
     reports := make([]node_report, 0, 2)
     for name, report := range n.Reports {
-      var kv_pairs string = ""
+      var kv_pairs []string = make([]string, 0, 2)
       for key, value := range report {
-        kv_pairs += key + "=" + value + ", "
+        kv_pairs = append(kv_pairs,key + "=" + value)
       }
+      kv_str := strings.Join(kv_pairs, ", ")
 
-      rep := node_report{name, kv_pairs, "success"}
+      rep := node_report{name, kv_str, "success"}
       reports = append(reports, rep)
     }
     nodes = append(nodes, node{n.System["node_name"], reports, "success"})
